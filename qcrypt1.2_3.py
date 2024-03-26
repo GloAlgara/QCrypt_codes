@@ -1,8 +1,5 @@
-from qiskit.visualization import array_to_latex
-from qiskit.quantum_info import Statevector, random_statevector
-from qiskit.quantum_info.operators import Operator, Pauli
-from qiskit import QuantumCircuit
-from qiskit.circuit.library import HGate, CXGate
+from qiskit.visualization import plot_bloch_vector
+from qiskit.quantum_info.operators import Operator
 import numpy as np
 
 ket0 = [[1],[0]]
@@ -52,12 +49,15 @@ print()
 print("Z*ψ:")
 print(np.real(Z_result))
 
+coff_x = np.real(X_result[0][0] + X_result[1][1])
+coff_y = np.real(Y_result[0][0] + Y_result[1][1])
+coff_z = np.real(Z_result[0][0] + Z_result[1][1])
+
 print()
 print("Calculate the coefficients: ")
-print("X: ", np.real(X_result[0][0] + X_result[1][1]))
-print("Y: ", np.real(Y_result[0][0] + Y_result[1][1]))
-print("Z: ", np.real(Z_result[0][0] + Z_result[1][1]))
-
+print("X: ", coff_x)
+print("Y: ", coff_y)
+print("Z: ", coff_z)
 
 rank = np.linalg.matrix_rank(density_matrix)
 print()
@@ -72,3 +72,10 @@ if np.isclose(trace_rho_squared, 1):
     print("The density matrix represents a pure state.")
 else:
     print("The density matrix represents a non-pure state.")
+
+
+bloch_vector = [coff_x, coff_y, coff_z]
+
+plot = plot_bloch_vector(bloch_vector)
+
+plot.savefig("bloch_vector_t3.png")
